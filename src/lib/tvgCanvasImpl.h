@@ -22,7 +22,7 @@
 #ifndef _TVG_CANVAS_IMPL_H_
 #define _TVG_CANVAS_IMPL_H_
 
-#include <vector>
+#include <unordered_map>
 #include "tvgPaint.h"
 
 /************************************************************************/
@@ -31,7 +31,7 @@
 
 struct Canvas::Impl
 {
-    vector<Paint*> paints;
+    unordered_map<uint32_t, Paint*> paints;
     RenderMethod*  renderer;
 
     Impl(RenderMethod* pRenderer):renderer(pRenderer)
@@ -48,7 +48,7 @@ struct Canvas::Impl
     {
         auto p = paint.release();
         if (!p) return Result::MemoryCorruption;
-        paints.push_back(p);
+        paints.insert(pair<uint32_t, Paint*>(2, p));
 
         return update(p);
     }
@@ -62,9 +62,9 @@ struct Canvas::Impl
 
         //free paints
         if (free) {
-            for (auto paint : paints) {
-                paint->pImpl->dispose(*renderer);
-                delete(paint);
+            for (auto element : paints) {
+                element.second->pImpl->dispose(*renderer);
+                delete(element.second);
             }
         }
 
@@ -84,8 +84,8 @@ struct Canvas::Impl
             paint->pImpl->update(*renderer, nullptr, 255, compList, RenderUpdateFlag::None);
         //Update all retained paint nodes
         } else {
-            for (auto paint : paints) {
-                paint->pImpl->update(*renderer, nullptr, 255, compList, RenderUpdateFlag::None);
+            for (auto element : paints) {
+                element.second->pImpl->update(*renderer, nullptr, 255, compList, RenderUpdateFlag::None);
             }
         }
         return Result::Success;
@@ -97,8 +97,8 @@ struct Canvas::Impl
 
         if (!renderer->preRender()) return Result::InsufficientCondition;
 
-        for (auto paint : paints) {
-            if (!paint->pImpl->render(*renderer)) return Result::InsufficientCondition;
+        for (auto element : paints) {
+            if (!element.second->pImpl->render(*renderer)) return Result::InsufficientCondition;
         }
 
         if (!renderer->postRender()) return Result::InsufficientCondition;
