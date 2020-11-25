@@ -73,3 +73,23 @@ Result Canvas::sync() noexcept
 
     return Result::InsufficientCondition;
 }
+
+Result Canvas::move_raise(Paint *paint) noexcept
+{
+    return pImpl->move_raise(paint);
+}
+
+Result Canvas::move_lower(Paint *paint) noexcept
+{
+    return pImpl->move_lower(paint);
+}
+
+Result Canvas::move_above(Paint *paint, Paint *above) noexcept
+{
+    return pImpl->move_above(paint, above);
+}
+
+Result Canvas::move_below(Paint *paint, Paint *below) noexcept
+{
+    return pImpl->move_below(paint, below);
+}

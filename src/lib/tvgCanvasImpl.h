@@ -23,6 +23,8 @@
 #define _TVG_CANVAS_IMPL_H_
 
 #include <vector>
+#include <iostream>
+#include <algorithm>
 #include "tvgPaint.h"
 
 /************************************************************************/
@@ -49,7 +51,6 @@ struct Canvas::Impl
         auto p = paint.release();
         if (!p) return Result::MemoryCorruption;
         paints.push_back(p);
-
         return update(p);
     }
 
@@ -104,6 +105,60 @@ struct Canvas::Impl
         if (!renderer->postRender()) return Result::InsufficientCondition;
 
         return Result::Success;
+    }
+
+    Result move_raise(Paint *paint) 
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        if (position == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        paints.push_back(paint);
+
+        return update(paint);
+    }
+
+    Result move_lower(Paint *paint) 
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        if (position == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        paints.insert(paints.begin(), 1, paint);
+
+        return update(nullptr);
+    }
+    
+    Result move_above(Paint *paint, Paint *above)
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        auto position_above = std::find(paints.begin(), paints.end(), above);
+        if (position == paints.end() || position_above == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        // need to update position after erase
+        position_above = std::find(paints.begin(), paints.end(), above);
+        paints.insert(position_above + 1, paint);
+
+        return update(nullptr);
+    }
+
+    Result move_below(Paint *paint, Paint *below)
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        auto position_below = std::find(paints.begin(), paints.end(), below);
+        if (position == paints.end() || position_below == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        // need to update position after erase
+        position_below = std::find(paints.begin(), paints.end(), below);
+        paints.insert(position_below, paint);
+
+        return update(nullptr);
     }
 };
 
