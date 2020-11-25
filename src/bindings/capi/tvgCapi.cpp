@@ -122,6 +122,25 @@ TVG_EXPORT Tvg_Result tvg_canvas_sync(Tvg_Canvas* canvas)
     return (Tvg_Result) reinterpret_cast<Canvas*>(canvas)->sync();
 }
 
+TVG_EXPORT Tvg_Result tvg_canvas_move_raise(Tvg_Canvas* canvas, Tvg_Paint* paint){
+    if (!canvas || !paint) return TVG_RESULT_INVALID_ARGUMENT;
+    return (Tvg_Result) reinterpret_cast<Canvas*>(canvas)->move_raise((Paint*) paint);
+}
+
+TVG_EXPORT Tvg_Result tvg_canvas_move_lower(Tvg_Canvas* canvas, Tvg_Paint* paint){
+    if (!canvas || !paint) return TVG_RESULT_INVALID_ARGUMENT;
+    return (Tvg_Result) reinterpret_cast<Canvas*>(canvas)->move_lower((Paint*) paint);
+}
+
+TVG_EXPORT Tvg_Result tvg_canvas_move_above(Tvg_Canvas* canvas, Tvg_Paint* paint, Tvg_Paint* above){
+    if (!canvas || !paint || !above) return TVG_RESULT_INVALID_ARGUMENT;
+    return (Tvg_Result) reinterpret_cast<Canvas*>(canvas)->move_above((Paint*) paint, (Paint*) above);
+}
+
+TVG_EXPORT Tvg_Result tvg_canvas_move_below(Tvg_Canvas* canvas, Tvg_Paint* paint, Tvg_Paint* below){
+    if (!canvas || !paint || !below) return TVG_RESULT_INVALID_ARGUMENT;
+    return (Tvg_Result) reinterpret_cast<Canvas*>(canvas)->move_below((Paint*) paint, (Paint*) below);
+}
 
 /************************************************************************/
 /* Paint API                                                            */
@@ -492,6 +511,25 @@ TVG_EXPORT Tvg_Result tvg_scene_push(Tvg_Paint* scene, Tvg_Paint* paint)
     return (Tvg_Result) reinterpret_cast<Scene*>(scene)->push(unique_ptr<Paint>((Paint*)paint));
 }
 
+TVG_EXPORT Tvg_Result tvg_scene_move_raise(Tvg_Paint* scene, Tvg_Paint* paint){
+    if (!scene || !paint) return TVG_RESULT_INVALID_ARGUMENT;
+    return (Tvg_Result) reinterpret_cast<Scene*>(scene)->move_raise((Paint*)paint);
+}
+
+TVG_EXPORT Tvg_Result tvg_scene_move_lower(Tvg_Paint* scene, Tvg_Paint* paint){
+    if (!scene || !paint) return TVG_RESULT_INVALID_ARGUMENT;
+    return (Tvg_Result) reinterpret_cast<Scene*>(scene)->move_lower((Paint*)paint);
+}
+
+TVG_EXPORT Tvg_Result tvg_scene_move_above(Tvg_Paint* scene, Tvg_Paint* paint, Tvg_Paint* above){
+    if (!scene || !paint || !above) return TVG_RESULT_INVALID_ARGUMENT;   
+    return (Tvg_Result) reinterpret_cast<Scene*>(scene)->move_above((Paint*)paint, (Paint*)above);
+}
+
+TVG_EXPORT Tvg_Result tvg_scene_move_below(Tvg_Paint* scene, Tvg_Paint* paint, Tvg_Paint* below){
+    if (!scene || !paint || !below) return TVG_RESULT_INVALID_ARGUMENT;
+    return (Tvg_Result) reinterpret_cast<Scene*>(scene)->move_below((Paint*)paint, (Paint*)below);
+}
 
 #ifdef __cplusplus
 }

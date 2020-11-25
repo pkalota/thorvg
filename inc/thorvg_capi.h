@@ -112,7 +112,10 @@ TVG_EXPORT Tvg_Result tvg_canvas_update(Tvg_Canvas* canvas);
 TVG_EXPORT Tvg_Result tvg_canvas_update_paint(Tvg_Canvas* canvas, Tvg_Paint* paint);
 TVG_EXPORT Tvg_Result tvg_canvas_draw(Tvg_Canvas* canvas);
 TVG_EXPORT Tvg_Result tvg_canvas_sync(Tvg_Canvas* canvas);
-
+TVG_EXPORT Tvg_Result tvg_canvas_move_raise(Tvg_Canvas* canvas, Tvg_Paint* paint);
+TVG_EXPORT Tvg_Result tvg_canvas_move_lower(Tvg_Canvas* canvas, Tvg_Paint* paint);
+TVG_EXPORT Tvg_Result tvg_canvas_move_above(Tvg_Canvas* canvas, Tvg_Paint* paint, Tvg_Paint* above);
+TVG_EXPORT Tvg_Result tvg_canvas_move_below(Tvg_Canvas* canvas, Tvg_Paint* paint, Tvg_Paint* below);
 
 /************************************************************************/
 /* Paint API                                                            */
@@ -185,6 +188,10 @@ TVG_EXPORT Tvg_Result tvg_picture_get_viewbox(const Tvg_Paint* paint, float* x, 
 TVG_EXPORT Tvg_Paint* tvg_scene_new();
 TVG_EXPORT Tvg_Result tvg_scene_reserve(Tvg_Paint* scene, uint32_t size);
 TVG_EXPORT Tvg_Result tvg_scene_push(Tvg_Paint* scene, Tvg_Paint* paint);
+TVG_EXPORT Tvg_Result tvg_scene_move_raise(Tvg_Paint* scene, Tvg_Paint* paint);
+TVG_EXPORT Tvg_Result tvg_scene_move_lower(Tvg_Paint* scene, Tvg_Paint* paint);
+TVG_EXPORT Tvg_Result tvg_scene_move_above(Tvg_Paint* scene, Tvg_Paint* paint, Tvg_Paint* above);
+TVG_EXPORT Tvg_Result tvg_scene_move_below(Tvg_Paint* scene, Tvg_Paint* paint, Tvg_Paint* below);
 
 
 #ifdef __cplusplus
