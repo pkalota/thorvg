@@ -310,6 +310,11 @@ public:
 
     static std::unique_ptr<Scene> gen() noexcept;
 
+    virtual Result move_raise(Paint *paint) noexcept;
+    virtual Result move_lower(Paint *paint) noexcept;
+    virtual Result move_above(Paint *paint, Paint *above) noexcept;
+    virtual Result move_below(Paint *paint, Paint *below) noexcept;
+    
     _TVG_DECLARE_PRIVATE(Scene);
 };
 

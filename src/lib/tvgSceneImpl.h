@@ -23,6 +23,7 @@
 #define _TVG_SCENE_IMPL_H_
 
 #include <vector>
+#include <algorithm>
 #include "tvgPaint.h"
 
 /************************************************************************/
@@ -107,6 +108,60 @@ struct Scene::Impl
         }
 
         return ret.release();
+    }
+
+    Result move_raise(Paint *paint) 
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        if (position == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        paints.push_back(paint);
+
+        return Result::Success;
+    }
+
+    Result move_lower(Paint *paint) 
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        if (position == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        paints.insert(paints.begin(), 1, paint);
+
+        return Result::Success;
+    }
+    
+    Result move_above(Paint *paint, Paint *above)
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        auto position_above = std::find(paints.begin(), paints.end(), above);
+        if (position == paints.end() || position_above == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        // need to update position after erase
+        position_above = std::find(paints.begin(), paints.end(), above);
+        paints.insert(position_above + 1, paint);
+
+        return Result::Success;
+    }
+
+    Result move_below(Paint *paint, Paint *below)
+    {
+        auto position = std::find(paints.begin(), paints.end(), paint);
+        auto position_below = std::find(paints.begin(), paints.end(), below);
+        if (position == paints.end() || position_below == paints.end())
+            return Result::InsufficientCondition;
+        
+        paints.erase(position);
+        // need to update position after erase
+        position_below = std::find(paints.begin(), paints.end(), below);
+        paints.insert(position_below, paint);
+
+        return Result::Success;
     }
 };
 

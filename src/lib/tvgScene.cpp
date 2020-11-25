@@ -59,3 +59,23 @@ Result Scene::reserve(uint32_t size) noexcept
 
     return Result::Success;
 }
+
+Result Scene::move_raise(Paint *paint) noexcept
+{
+    return pImpl->move_raise(paint);
+}
+
+Result Scene::move_lower(Paint *paint) noexcept
+{
+    return pImpl->move_lower(paint);
+}
+
+Result Scene::move_above(Paint *paint, Paint *above) noexcept
+{
+    return pImpl->move_above(paint, above);
+}
+
+Result Scene::move_below(Paint *paint, Paint *below) noexcept
+{
+    return pImpl->move_below(paint, below);
+}
